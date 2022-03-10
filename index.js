@@ -52,10 +52,11 @@ io.on('connection', (socket) => {
   ///Select a driver (customers action)
   ///From the list of drivers you have, the customer will select a driver and send a pickup request to that driver.
   socket.on('selectDriver', (driversId, customerInfo) => {
+    const customer = { ...customerInfo, socketId: socket.id };
     const driver = getDriver(driversId);
     if (driver) {
       ///make sure the customerInfo here also contains the customers socketId because you will respond back with it
-      io.to(driver.socketId).emit('pickupRequest', customerInfo);
+      io.to(driver.socketId).emit('pickupRequest', customer);
     }
   });
 
